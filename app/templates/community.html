@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>자유게시판</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.8/lottie.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700&display=swap');
+
+      header {
+        text-align: center;
+      }
+      
+      header .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 100px;
+        cursor: pointer; /* 로고 이미지에 마우스 커서 변경 */
+        margin: 0 auto; /* 로고를 수평 가운데로 정렬 */
+      }
+      
+      body {
+        font-family: 'Pretendard', Arial, sans-serif;
+        background-color: #E8E5FF;
+        margin: 0;
+        padding: 20px;
+      }
+      
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      .community-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      .community-list li {
+        margin-bottom: 20px;
+      }
+      
+      .community-list li a {
+        text-decoration: none;
+        color: #333;
+        display: block;
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .community-list li a:hover {
+        background-color: #e0e0e0;
+      }
+      
+      .community-list li h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+      
+      .community-list li .date {
+        font-size: 14px;
+        color: #888;
+      }
+  
+      .search-box {
+        display: flex;
+        margin-bottom: 20px;
+      }
+      
+      .search-box input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px 0 0 5px;
+        border: none;
+        margin-right: 5px;
+      }
+      
+      .search-box input[type="submit"] {
+        background-color: #6800CF;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 0 5px 5px 0;
+        border: none;
+        cursor: pointer;
+      }
+  
+      .ask-button {
+        background-color: #6800CF;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        margin-left: 5px;
+      }
+      #scores-frame {
+                position: fixed;
+                top: 300px;
+                right: 10px;
+                width: 210px;
+                height: 360px;
+                border: 3px solid #2B3467;
+                border-radius : 20px;
+                background-color: #FCFFE7;
+                bottom: 10px;
+                right: 10px;
+                border-radius: 20px;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+      @media screen and (min-width: 1100px) {
+            #scores-frame {
+            transform: translateX(0%);
+            
+        }
+      }
+    </style>
+</head>
+<header>
+  <a href="/home"> <!-- 로고 이미지 클릭 시 index.html로 이동 -->
+    <div class="logo">
+      <script>
+        var animation = bodymovin.loadAnimation({
+          container: document.querySelector('.logo'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: 'https://assets8.lottiefiles.com/packages/lf20_qqt9hvgz.json'
+        });
+      </script>
+    </div>
+  </a>
+</header>
+<body>
+  <div class="container">
+    <h1>자유게시판</h1>
+    <form action="/community" method="GET">
+      <div class="search-box">
+        <input id="search-input" name="freesearch" type="text" placeholder="검색어를 입력하세요.">
+        <input type="submit" value="검색">
+        <button type="button" class="ask-button" onclick="new_free()">새 글 작성</button>
+      </div>
+    </form>
+    <ul class="community-list">
+      {% for post in posts %}
+      <li>
+        <a href="{{ url_for('view_post', post_id=post.0) }}">
+          <h2>{{ post.1 }}</h2>
+          <p class="date">작성자: {{ post.2 }}</p>
+          <p class="date">작성일: {{ post.3 }}</p>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <iframe id="scores-frame" src="http://127.0.0.1:5000/games?game_index=0"></iframe>
+
+  <script>
+    function new_free() {
+      location = "{{ url_for('new_post') }}";
+    }
+    // 이전 버튼과 다음 버튼 요소 선택
+    const previousBtn = document.getElementById('previous-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+            // 버튼 클릭 이벤트 리스너 등록
+    previousBtn.addEventListener('click', handlePrevious);
+    nextBtn.addEventListener('click', handleNext);
+    
+  </script>
+</body>
+</html>

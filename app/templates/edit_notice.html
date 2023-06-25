@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>공지사항 수정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #CCCCCC;
+            resize: vertical;
+        }
+
+        input[type="submit"] {
+            background-color: #007157;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #007157;
+        }
+    </style>
+</head>
+<body>
+    <h1>공지사항 수정</h1>
+    <form method="post" action="{{ url_for('edit_notice', post_id=post[0]) }}">
+        <input type="text" name="title" placeholder="제목" value="{{ post[3] }}" required><br>
+        <textarea name="content" placeholder="글 내용" required>{{ post[2] }}</textarea><br>
+        <input type="submit" value="글 수정">
+    </form>
+</body>
+</html>

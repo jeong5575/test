@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MLB Scores</title>
+    <style>
+        .arrow-btn {
+          width: 35px;
+          height: 35px;
+          background-color: #E5BEEC;
+          border-color: #E5BEEC;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          position: absolute;
+        }
+
+        .arrow-btn:hover {
+          background-color: #EB455F;
+          color: white;
+        }
+
+        #close-btn {
+            top : 0px;
+            right: -15px; /* 왼쪽에 위치 */
+        }
+
+        #previous-btn {
+            top : 5px;
+            right: 50px; /* 왼쪽에 위치 */
+        }
+
+        #next-btn {
+            top : 5px;
+            left: 50px; /* 오른쪽에 위치 */
+        }
+
+        .game {
+          width: 135px;
+          padding: 10px;
+          margin: 10px;
+          border: 0px solid #2B3467;
+          background-color: #FCFFE7;
+          text-align: center;
+          position: relative;
+          display: inline-block;
+          vertical-align: top;
+          border-radius : 20px;
+        }
+
+        .game h2 {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .game .team-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .game .team-logo img {
+          display: block;
+          width: 48px;
+          height: 48px;
+        }
+
+        .game .team-name {
+          font-size: 16px;
+        }
+
+        .game .vs {
+          font-size: 24px;
+          margin: 10px 0;
+          position: relative;
+        }
+
+        .game .vs:before {
+          content: '';
+          position: absolute;
+          left: -50px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 30px;
+          height: 30px;
+        }
+
+        .game .vs:after {
+          content: '';
+          position: absolute;
+          right: -50px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 30px;
+          height: 30px;
+        }
+
+        .game p {
+          margin: 10px 0;
+        }
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'yg-jalnan', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+
+  <div id="game-container">
+    {% for score in scores %}
+        <div class="game">
+            <button id="close-btn" class="arrow-btn">X</button>
+            <h3>MLB 경기결과</h3>
+            <h2>
+                <div class="team-logo">
+                    <img src="{{ score.away_logo }}" alt="{{ score['away_team'] }} logo">
+                    <span class="team-name">{{ score['away_team'] }}</span>
+                </div>
+                <span class="vs">
+                    <button id="previous-btn" class="arrow-btn">전</button>
+                    vs
+                    <button id="next-btn" class="arrow-btn">후</button>
+                </span>
+                <div class="team-logo">
+                    <img src="{{ score.home_logo }}" alt="{{ score['home_team'] }} logo">
+                    <span class="team-name">{{ score['home_team'] }}</span>
+                </div>
+            </h2>
+            <p>Score: {{ score['away_score'] }} - {{ score['home_score'] }}</p>
+            {% if score['away_score'] is none or score['home_score'] is none or score['away_score'] == score['home_score'] %}
+                <p>{{ score['winning_team'] }}</p>
+            {% else %}
+                <p>승리팀: {{ score['winning_team'] }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+    <script>
+      // 이전 버튼 클릭 이벤트 핸들러
+      function handlePrevious() {
+          // 현재 URL에서 game_index 값 가져오기
+          const urlParams = new URLSearchParams(window.location.search);
+          let currentIndex = parseInt(urlParams.get('game_index'));
+
+          // game_index가 NaN이거나 0인 경우 이동하지 않음
+          if (isNaN(currentIndex) || currentIndex === 0) {
+              return;
+          }
+
+          // 이전 인덱스 계산
+          const previousIndex = currentIndex - 1;
+
+          // URL 업데이트
+          const previousUrl = updateQueryStringParameter(window.location.href, 'game_index', previousIndex);
+          window.location.href = previousUrl;
+}
+
+          // 다음 버튼 클릭 이벤트 핸들러
+      function handleNext() {
+          // 현재 URL에서 game_index 값 가져오기
+          const urlParams = new URLSearchParams(window.location.search);
+          let currentIndex = parseInt(urlParams.get('game_index'));
+          
+          // game_index가 NaN인 경우 0으로 설정
+          if (isNaN(currentIndex)) {
+              currentIndex = 0;
+          }
+
+          // 다음 인덱스 계산
+          const nextIndex = currentIndex + 1;
+
+          // URL 업데이트
+          const nextUrl = updateQueryStringParameter(window.location.href, 'game_index', nextIndex);
+          window.location.href = nextUrl;
+      }
+
+        // URL에 game_index 파라미터 값을 업데이트하는 함수
+        function updateQueryStringParameter(url, key, value) {
+            const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+            const separator = url.indexOf('?') !== -1 ? "&" : "?";
+            if (url.match(re)) {
+                return url.replace(re, '$1' + key + "=" + value + '$2');
+            } else {
+                return url + separator + key + "=" + value;
+            }
+        }
+
+        // 이전 버튼과 다음 버튼 요소 선택
+        const previousBtn = document.getElementById('previous-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // 버튼 클릭 이벤트 리스너 등록
+        previousBtn.addEventListener('click', handlePrevious);
+        nextBtn.addEventListener('click', handleNext);
+        
+        //닫기버튼 명령어
+        const closeBtn = document.getElementById('close-btn');
+        closeBtn.addEventListener('click', function() {
+        const scoresFrame = window.parent.document.getElementById('scores-frame');
+        scoresFrame.style.display = 'none';
+  });
+    </script>
+</body>
+</html>

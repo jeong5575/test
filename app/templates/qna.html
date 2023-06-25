@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>질의응답게시판</title>
+    <style>
+      header {
+        text-align: center;
+      }
+      
+      header img {
+        width: 100px;
+        cursor: pointer; /* 로고 이미지에 마우스 커서 변경 */
+      }
+      
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #B3C1F4;
+        margin: 0;
+        padding: 20px;
+      }
+      
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      .community-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      .community-list li {
+        margin-bottom: 20px;
+      }
+      
+      .community-list li a {
+        text-decoration: none;
+        color: #333;
+        display: block;
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .community-list li a:hover {
+        background-color: #e0e0e0;
+      }
+      
+      .community-list li h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+      
+      .community-list li .date {
+        font-size: 14px;
+        color: #888;
+      }
+  
+      .search-box {
+        display: flex;
+        margin-bottom: 20px;
+      }
+      
+      .search-box input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px 0 0 5px;
+        border: none;
+        margin-right: 5px;
+      }
+      
+      .search-box input[type="submit"] {
+        background-color: #556EC9;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 0 5px 5px 0;
+        border: none;
+        cursor: pointer;
+      }
+  
+      .ask-button {
+        background-color: #556EC9;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        margin-left: 5px;
+      }
+    </style>
+</head>
+<header>
+  <a href="/home"> <!-- 로고 이미지 클릭 시 index.html로 이동 -->
+    <img src="static/logo.png" alt="로고">
+  </a>
+</header>
+<body>
+  <div class="container">
+    <h1>질의응답 게시판</h1>
+    <form action="/qna" method="GET">
+      <div class="search-box">
+        <input id="search-input" name="qnasearch" type="text" placeholder="검색어를 입력하세요.">
+        <input type="submit" value="검색">
+        <button type="button" class="ask-button" onclick="new_free()">새 글 작성</button>
+      </div>
+    </form>
+    <ul class="community-list">
+      {% for row in rows %}
+      <li>
+        <a href="{{ url_for('view_qna', post_id=row.3) }}">
+          <h2>{{ row.0 }}</h2>
+          <p class="date">작성자: {{ row.1 }}</p>
+          <p class="date">작성일: {{ row.2 }}</p>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <script>
+    function new_free() {
+      location = "{{ url_for('new_qna') }}";
+    }
+  </script>
+</body>
+</html>

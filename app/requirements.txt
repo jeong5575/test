@@ -1,0 +1,6 @@
+#필요한 종속성 명시 (필요한 패키지와 버전 같은것들) 
+flask
+gunicorn
+mariadb
+bcrypt
+requests

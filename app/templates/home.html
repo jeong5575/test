@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>홈 화면</title>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clock.css') }}">
+    <script src="{{ url_for('static', filename='js/clock.js') }}"></script>
+</head>
+<body>
+    <div id="clock"></div>
+</body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.8/lottie.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700&display=swap');
+
+    body {
+      background: linear-gradient(135deg, #D9E6FF, #F3F8FF);
+    }
+
+    header {
+      text-align: center;
+      position: relative;
+    }
+    
+    header .logo {
+      width: 200px;
+      height: 200px;
+      margin: 20px auto;
+      cursor: pointer;
+    }
+
+    .weather-info {
+      text-align: right;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      margin: 10px;
+    }
+    
+    .weather-info h2 {
+      margin: 0;
+    }
+    
+    .weather-info p {
+      margin: 5px;
+    }
+    
+    .weather-icon {
+      text-align: center;
+    }
+    
+    .weather-icon img {
+      width: 100px;
+    }
+    
+    .sukle {
+      font-family: 'Pretendard ExtraBold', sans-serif;
+      font-size: 24px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      color: black;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    main div {
+      margin: 10px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 30px;
+      width: 250px;
+    }
+    
+    main div img {
+      width: 200px;
+      transition: transform 0.3s ease;
+    }
+
+    main div img:hover {
+      transform: scale(1.1);
+    }
+
+    .login {
+      text-align: center;
+      margin-top: 20px;
+      font-family: 'Pretendard', sans-serif;
+    }
+    
+    .login p {
+      font-weight: 700;
+    }
+
+    .login .name {
+      font-weight: 700;
+    }
+
+    .login .greeting {
+      font-weight: 400;
+    }
+
+    .login input[type="text"],
+    .login input[type="password"],
+    .login input[type="submit"],
+    .login a {
+      margin: 5px;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    .login-link {
+      display: block;
+      text-align: center;
+    }
+
+    hr {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <form action="/login" method="POST">
+  <header>
+    <div class="logo"></div>
+    <h1 class="sukle">☁️쓱클☁️</h1>
+  </header>
+  
+  <main>
+    <div>
+      <a href="/notice">
+        <img src="static/공지사항.png" alt="이미지1">
+      </a>
+    </div>
+    
+    <div>
+      <a href="/qna">
+        <img src="static/질의응답.png" alt="이미지2">
+      </a>
+    </div>
+    
+    <div>
+      <a href="/community">
+        <img src="static/자유게시판.png" alt="이미지3">
+      </a>
+    </div>
+    
+    <div>
+      <a href="/study">
+        <img src="static/스터디모집.png" alt="이미지4">
+      </a>
+    </div>
+  </main>
+
+  <div class="login">
+      <p><span class="name">{{ session['name'] }}</span>님 <span class="greeting">반갑습니다.</span></p>
+  </div>
+  <div class="weather-info">
+    {% if weather_data %}
+    <div class="weather-icon">
+      <img src="https://openweathermap.org/img/w/{{ weather_data['weather'][0]['icon'] }}.png" alt="날씨 아이콘">
+    </div>
+    <h2 class="bold">오늘의 날씨</h2>
+    <p class="semibold">온도: {{ celsius | round(1) }}°C </p>
+    <p class="semibold">습도: {{ weather_data['main']['humidity'] }}%</p>
+    {% if 'rain' in weather_data and '1h' in weather_data['rain'] %}
+    <p class="cute-font semibold">강수량: {{ weather_data['rain']['1h'] }}mm</p>
+    {% endif %}
+    <!-- 기타 날씨 정보 표시 -->
+    {% else %}
+    <p>날씨 정보를 가져오는 데 실패했습니다.</p>
+    {% endif %}
+  </div>
+    <a class="login-link" href="/logout">로그아웃</a>
+
+  <script>
+    var animation = bodymovin.loadAnimation({
+      container: document.querySelector('.logo'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://assets8.lottiefiles.com/packages/lf20_qqt9hvgz.json'
+    });
+  </script>
+</form>
+</body>
+</html>

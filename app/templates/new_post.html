@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>새 글 작성</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #E8E5FF;
+        margin: 0;
+        padding: 20px;
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      input[type="text"],
+      textarea {
+        width: calc(100% - 22px);
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        resize: vertical;
+        margin-bottom: 10px;
+      }
+      
+      input[type="submit"] {
+        background-color: #6800CF;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+</head>
+<body>
+    <h1>새 글 작성</h1>
+    <form method="post" action="{{ url_for('new_post') }}">
+        <input type="text" name="title" placeholder="제목" required><br>
+        <input type="hidden" name="author" value="{{ session['email'] }}"><br>
+        <textarea name="content" placeholder="글 내용" required></textarea><br>
+        <input type="submit" value="글 작성">
+    </form>
+</body>
+</html>

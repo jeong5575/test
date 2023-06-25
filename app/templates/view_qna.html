@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ qna[1] }}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #B3C1F4;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+    
+    .post-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    p {
+      margin-bottom: 10px;
+    }
+    
+    .author {
+      font-size: 14px;
+      color: #888;
+    }
+    
+    .date {
+      font-size: 14px;
+      color: #888;
+    }
+    
+    .content {
+      border: 1px solid #CCCCCC;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    
+    form {
+      display: inline-block;
+      margin-top: 10px;
+    }
+    
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    li {
+      margin-bottom: 20px;
+      background-color: #E0E0E0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      resize: vertical;
+      margin-bottom: 10px;
+      box-sizing: border-box; /* 추가된 부분 */
+    }
+    
+    .btn-primary {
+      background-color: #556EC9;
+      color: white;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      padding: 3px 8px;
+      font-size: 12px;
+    }
+    
+    .btn-primary:hover {
+      background-color: #556EC9;
+    }
+    
+    .btn-danger {
+      background-color: #556EC9;
+      color: white;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      padding: 3px 8px;
+      font-size: 12px;
+    }
+    
+    .btn-danger:hover {
+      background-color: #556EC9;
+    }
+    
+    .post-title {
+      font-size: 20px;
+    }
+    
+    .comment-heading {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    
+    .comment-create-heading {
+      font-size: 18px;
+    }
+    
+    .comment-text {
+      margin-top: 5px;
+    }
+    
+    /* 추가된 부분 */
+    .comment-form {
+      max-width: 100%;
+    }
+
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .small-image {
+      max-width: 200px;
+    }
+    
+    .image-container {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="image-container center">
+    <a href="/qna">
+      <img src="/static/질의응답게시판가기.png" alt="질의응답게시판가기" class="small-image">
+    </a>
+  </div>
+  <div class="post-container">
+    <h1 class="post-title">{{ qna[1] }}</h1>
+    <p class="author">작성자: {{ qna[2] }}</p>
+    <p class="date">작성일시: {{ qna[4] }}</p>
+    <div class="content">{{ qna[3] }}</div>
+
+    <!-- 게시글 수정 버튼 -->
+    {% if qna[2] == session['email'] %}
+      <form method="get" action="{{ url_for('edit_qna', post_id=qna[0]) }}">
+        <input type="submit" value="게시글 수정" class="btn btn-primary">
+      </form>
+    {% endif %}
+
+    <!-- 게시글 삭제 버튼 -->
+    {% if qna[2] == session['email'] %}
+      <form method="post" action="{{ url_for('delete_qna', post_id=qna[0]) }}">
+        <input type="submit" value="게시글 삭제" class="btn btn-danger">
+      </form>
+    {% endif %}
+
+    <!-- ... -->
+    <h2 class="comment-heading">댓글</h2>
+    <ul>
+      {% for comment in comments %}
+        <li>
+          <p class="author">이메일: {{ comment[4] }}</p>
+          <p class="date">작성일시: {{ comment[2] }}</p>
+          <p class="comment-text">{{ comment[1] }}</p>
+          {% if comment[4] == session['email'] %}
+            <form method="post" action="{{ url_for('delete_comment', comment_id=comment[0]) }}">
+              <input type="submit" value="댓글 삭제" class="btn btn-danger">
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h2 class="comment-create-heading">댓글 작성</h2>
+    <form class="comment-form" method="post" action="{{ url_for('view_qna', post_id=qna[0]) }}">
+      <input type="text" name="author" value="{{ session['email'] }}" readonly style="display: none;">
+      <p class="author">이메일: {{ session['email'] }}</p>
+      <textarea name="content" placeholder="댓글 내용" required></textarea><br>
+      <input type="submit" value="댓글 작성" class="btn btn-primary">
+    </form>
+  </div>
+</body>
+</html>

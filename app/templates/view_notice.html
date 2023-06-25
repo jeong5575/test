@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ notice[1] }}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #CDF2EA;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+    
+    .post-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    p {
+      margin-bottom: 10px;
+    }
+    
+    .author {
+      font-size: 14px;
+      color: #888;
+    }
+    
+    .date {
+      font-size: 14px;
+      color: #888;
+    }
+    
+    .content {
+      border: 1px solid #CCCCCC;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    
+    form {
+      display: inline-block;
+      margin-top: 10px;
+    }
+    
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    li {
+      margin-bottom: 20px;
+      background-color: #E0E0E0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      resize: vertical;
+      margin-bottom: 10px;
+      box-sizing: border-box; /* 추가된 부분 */
+    }
+    
+    .btn-primary {
+      background-color: #007157;
+      color: white;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      padding: 3px 8px;
+      font-size: 12px;
+    }
+    
+    .btn-primary:hover {
+      background-color: #007157;
+    }
+    
+    .btn-danger {
+      background-color: #007157;
+      color: white;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      padding: 3px 8px;
+      font-size: 12px;
+    }
+    
+    .btn-danger:hover {
+      background-color: #007157;
+    }
+    
+    .post-title {
+      font-size: 20px;
+    }
+    
+    .comment-heading {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    
+    .comment-create-heading {
+      font-size: 18px;
+    }
+    
+    .comment-text {
+      margin-top: 5px;
+    }
+    
+    /* 추가된 부분 */
+    .comment-form {
+      max-width: 100%;
+    }
+
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .small-image {
+      max-width: 200px;
+    }
+    
+    .image-container {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="image-container center">
+    <a href="/notice">
+      <img src="/static/공지사항가기.png" alt="공지사항게시판가기" class="small-image">
+    </a>
+  </div>
+  <div class="post-container">
+    <h1 class="post-title">{{ notice[1] }}</h1>
+    <p class="author">작성자: {{ notice[2] }}</p>
+    <p class="date">작성일시: {{ notice[4] }}</p>
+    <div class="content">{{ notice[3] }}</div>
+
+    <!-- 게시글 수정 버튼 -->
+    {% if notice[2] == session['email'] %}
+      <form method="get" action="{{ url_for('edit_notice', post_id=notice[0]) }}">
+        <input type="submit" value="게시글 수정" class="btn btn-primary">
+      </form>
+    {% endif %}
+
+    <!-- 게시글 삭제 버튼 -->
+    {% if notice[2] == session['email'] %}
+      <form method="post" action="{{ url_for('delete_notice', post_id=notice[0]) }}">
+        <input type="submit" value="게시글 삭제" class="btn btn-danger">
+      </form>
+    {% endif %}
+
+  </div>
+</body>
+</html>

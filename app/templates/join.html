@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>회원가입</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.8/lottie.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700&display=swap');
+    
+    body {
+      background-color: #F7F7F7;
+      font-family: 'Pretendard', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    form {
+      max-width: 300px;
+      margin: 40px auto;
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 24px;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="password"]::placeholder {
+      color: #999;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      background-color: #002FD4;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #061f77;
+    }
+
+    .logo {
+      width: 200px;
+      height: 200px;
+      margin: 20px auto;
+      cursor: pointer;
+    }
+
+    .footer-text {
+      text-align: center;
+      font-size: 12px;
+      color: #000;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"></div>
+  </header>
+  <form action="/join" method="POST">
+    <h2>회원가입</h2>
+    <input type="text" name="name" placeholder="이름" required>
+    <br>
+    <input type="email" name="email" placeholder="이메일" required>
+    <br>
+    <input type="password" name="password" placeholder="비밀번호" required>
+    <br>
+    <input type="password" name="confirm_password" placeholder="비밀번호 확인" required>
+    <br>
+    <input type="submit" value="가입하기">
+  </form>
+
+  <script>
+    var animation = bodymovin.loadAnimation({
+      container: document.querySelector('.logo'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://assets8.lottiefiles.com/packages/lf20_qqt9hvgz.json'
+    });
+  </script>
+</body>
+</html>
